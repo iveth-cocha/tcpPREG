@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Servidor {
-    private static final int PORT = 5000;
+    
     static Map<String, String> preguntas = new HashMap<>();
 
     static {
@@ -17,12 +17,15 @@ public class Servidor {
     }
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Servidor iniciado en el puerto " + PORT);
+        try {
+            ServerSocket socketServidor = new ServerSocket(5000);
+            System.out.println("Experando conexiones.....");
+            
 
             while (true) {
-                Socket socketCliente = serverSocket.accept();
-                new HiloCliente(socketCliente).start();
+                Socket socketCliente = socketServidor.accept();
+                HiloCliente hilo = new HiloCliente(socketCliente);
+                hilo.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
